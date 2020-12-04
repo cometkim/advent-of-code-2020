@@ -1,0 +1,45 @@
+{
+  "name": "advent-of-code-2020",
+  "version": "0.0.0",
+  "description": "My Project",
+  "esy": {
+    "build": "dune build -p <PACKAGE_NAME>",
+    "buildDev": "pesy",
+    "release": {
+      "releasedBinaries": [
+        "AdventOfCode2020App.exe"
+      ]
+    }
+  },
+  "buildDirs": {
+    "test": {
+      "require": ["advent-of-code-2020.lib"],
+      "main": "TestAdventOfCode2020",
+      "name": "TestAdventOfCode2020.exe"
+    },
+    "library": {
+      "name": "advent-of-code-2020.lib",
+      "namespace": "AdventOfCode2020"
+    },
+    "executable": {
+      "require": ["advent-of-code-2020.lib"],
+      "main": "AdventOfCode2020App",
+      "name": "AdventOfCode2020App.exe"
+    }
+  },
+  "scripts": {
+    "pesy": "bash -c 'env PESY_MODE=update pesy'",
+    "test": "esy x TestAdventOfCode2020.exe"
+  },
+  "dependencies": {
+    "@opam/dune": ">=1.6.0",
+    "@esy-ocaml/reason": "*",
+    "ocaml": "^4.4.0"
+  },
+  "devDependencies": {
+    "ocaml": "4.7.1004",
+    "refmterr": "*",
+    "pesy": "*",
+    "@opam/merlin": "*"
+  }
+}
