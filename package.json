@@ -7,42 +7,36 @@
     "buildDev": "pesy build",
     "release": {
       "rewritePrefix": true,
-      "bin": [
-        "AdventOfCode2020App.exe"
-      ]
+      "bin": [ "AdventOfCode2020App.exe" ]
     }
   },
   "buildDirs": {
     "src/lib": {
       "imports": [
+        "Lwt = require('lwt')",
         "Fp = require('@reason-native/fp')",
-        "Fs = require('@reason-native/fs/lib')"
+        "Fs = require('@reason-native/fs/lib')",
+        "Console = require('@reason-native/console/lib')"
+      ],
+      "preprocess": [
+        "pps",
+        "lwt_ppx"
       ]
     },
     "src/bin": {
       "imports": [
-        "Lib = require('advent-of-code-2020/src/lib')"
+        "Lib = require('advent-of-code-2020/src/lib')",
+        "Inquire = require('@opam/inquire')"
       ],
-      "bin": {
-        "AdventOfCode2020App.exe": "App.re"
-      }
+      "bin": { "AdventOfCode2020App.exe": "App.re" }
     },
     "test/lib": {
-      "imports": [
-        "Rely = require('@reason-native/rely/lib')"
-      ],
-      "flags": [
-        "-linkall",
-        "-g"
-      ]
+      "imports": [ "Rely = require('@reason-native/rely/lib')" ],
+      "flags": [ "-linkall", "-g" ]
     },
     "test/bin": {
-      "imports": [
-        "Test = require('advent-of-code-2020/test/lib')"
-      ],
-      "bin": {
-        "RunTests.exe": "RunTests.re"
-      }
+      "imports": [ "Test = require('advent-of-code-2020/test/lib')" ],
+      "bin": { "RunTests.exe": "RunTests.re" }
     }
   },
   "scripts": {
@@ -52,12 +46,15 @@
   "dependencies": {
     "@esy-ocaml/reason": "*",
     "@opam/dune": "*",
-    "ocaml": "~4.10.0",
+    "@opam/inquire": "0.2.1",
+    "@opam/lwt": "*",
+    "@opam/lwt_ppx": "*",
     "@pesy/esy-pesy": "0.1.0-alpha.13",
     "@reason-native/console": "^0.1.0",
     "@reason-native/fp": "*",
     "@reason-native/fs": "*",
-    "@reason-native/rely": "^3.2.1"
+    "@reason-native/rely": "^3.2.1",
+    "ocaml": "~4.10.0"
   },
   "devDependencies": {
     "refmterr": "*",
