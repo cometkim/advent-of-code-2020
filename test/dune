@@ -5,7 +5,7 @@
 (executable
    ; The entrypoint module
    (name TestAdventOfCode2020)  ;  From package.json main field
-   ; The name of the executable (runnable via esy x TestAdventOfCode2020.exe)
+   ; The name of the executable (runnable via esy x TestAdventOfCode2020.exe) 
    (public_name TestAdventOfCode2020.exe)  ;  From package.json name field
    (libraries  advent-of-code-2020.lib ) ;  From package.json require field (array of strings)
 )

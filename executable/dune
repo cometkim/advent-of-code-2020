@@ -5,7 +5,7 @@
 (executable
    ; The entrypoint module
    (name AdventOfCode2020App)  ;  From package.json main field
-   ; The name of the executable (runnable via esy x AdventOfCode2020App.exe)
+   ; The name of the executable (runnable via esy x AdventOfCode2020App.exe) 
    (public_name AdventOfCode2020App.exe)  ;  From package.json name field
    (libraries  advent-of-code-2020.lib ) ;  From package.json require field (array of strings)
 )
