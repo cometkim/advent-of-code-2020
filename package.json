@@ -3,43 +3,65 @@
   "version": "0.0.0",
   "description": "My Project",
   "esy": {
-    "build": "dune build -p <PACKAGE_NAME>",
-    "buildDev": "pesy",
+    "build": "dune build -p #{self.name}",
+    "buildDev": "pesy build",
     "release": {
-      "releasedBinaries": [
+      "rewritePrefix": true,
+      "bin": [
         "AdventOfCode2020App.exe"
       ]
     }
   },
   "buildDirs": {
-    "test": {
-      "require": ["advent-of-code-2020.lib"],
-      "main": "TestAdventOfCode2020",
-      "name": "TestAdventOfCode2020.exe"
+    "src/lib": {
+      "imports": [
+        "Fp = require('@reason-native/fp')",
+        "Fs = require('@reason-native/fs/lib')"
+      ]
     },
-    "library": {
-      "name": "advent-of-code-2020.lib",
-      "namespace": "AdventOfCode2020"
+    "src/bin": {
+      "imports": [
+        "Lib = require('advent-of-code-2020/src/lib')"
+      ],
+      "bin": {
+        "AdventOfCode2020App.exe": "App.re"
+      }
     },
-    "executable": {
-      "require": ["advent-of-code-2020.lib"],
-      "main": "AdventOfCode2020App",
-      "name": "AdventOfCode2020App.exe"
+    "test/lib": {
+      "imports": [
+        "Rely = require('@reason-native/rely/lib')"
+      ],
+      "flags": [
+        "-linkall",
+        "-g"
+      ]
+    },
+    "test/bin": {
+      "imports": [
+        "Test = require('advent-of-code-2020/test/lib')"
+      ],
+      "bin": {
+        "RunTests.exe": "RunTests.re"
+      }
     }
   },
   "scripts": {
-    "pesy": "bash -c 'env PESY_MODE=update pesy'",
-    "test": "esy x TestAdventOfCode2020.exe"
+    "start": "esy x AdventOfCode2020App.exe",
+    "test": "esy x RunTests.exe"
   },
   "dependencies": {
-    "@opam/dune": ">=1.6.0",
     "@esy-ocaml/reason": "*",
-    "ocaml": "^4.4.0"
+    "@opam/dune": "*",
+    "ocaml": "~4.10.0",
+    "@pesy/esy-pesy": "0.1.0-alpha.13",
+    "@reason-native/console": "^0.1.0",
+    "@reason-native/fp": "*",
+    "@reason-native/fs": "*",
+    "@reason-native/rely": "^3.2.1"
   },
   "devDependencies": {
-    "ocaml": "4.7.1004",
     "refmterr": "*",
-    "pesy": "*",
+    "@opam/ocaml-lsp-server": "ocaml/ocaml-lsp:ocaml-lsp-server.opam",
     "@opam/merlin": "*"
   }
 }
