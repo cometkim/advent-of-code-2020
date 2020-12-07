@@ -27,7 +27,10 @@
       "bin": { "AdventOfCode2020App.exe": "App.re" }
     },
     "test/lib": {
-      "imports": [ "Rely = require('@reason-native/rely/lib')" ],
+      "imports": [
+        "Lib = require('advent-of-code-2020/src/lib')",
+        "Rely = require('@reason-native/rely/lib')"
+      ],
       "flags": [ "-linkall", "-g" ]
     },
     "test/bin": {

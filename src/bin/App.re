@@ -17,20 +17,44 @@ let select_day = () => {
   Lwt.return(day);
 };
 
-let get_answer = day =>
+let read_input = day => {
+  let filename =
+    switch (day) {
+    | "day 1 - part 1"
+    | "day 1 - part 2" => Some("day1.txt")
+    | _ => None
+    };
+  switch (filename) {
+  | Some(filename) =>
+    let* chan = Lwt_io.open_file("./src/bin/input/" ++ filename, ~mode=Input);
+    let stream = Lwt_io.read_lines(chan);
+
+    let* lines = stream |> Lwt_stream.to_list;
+    Lwt.return(Some(lines |> Util.joinStrings("\n")));
+  | None => Lwt.return(None)
+  };
+};
+
+let get_answer = (day, input) =>
   switch (day) {
-  | "day 1 - part 1" => Some(Day1.part1())
+  | "day 1 - part 1" => Some(Day1.part1(input))
+  | "day 1 - part 2" => Some(Day1.part2(input))
   | _ => None
   };
 
 Lwt_main.run(
   {
     let* day = select_day();
-    let answer = get_answer(day);
-    switch (answer) {
-    | Some(answer) =>
-      Console.log("The answer is: " ++ string_of_int(answer))
-    | None => Console.error("There is no solution for \"" ++ day ++ "\" yet")
+    let* input = read_input(day);
+    switch (input) {
+    | Some(input) =>
+      let answer = get_answer(day, input);
+      switch (answer) {
+      | Some(answer) => Console.log("The answer is: " ++ answer)
+      | None =>
+        Console.error("There is no solution for \"" ++ day ++ "\" yet")
+      };
+    | None => Console.error("No input for \"" ++ day ++ "\"")
     };
     Lwt.return();
   },

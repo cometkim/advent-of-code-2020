@@ -9,3 +9,4 @@ _esy/
 advent-of-code-2020.install
 .DS_Store
 *.install
+*.log
