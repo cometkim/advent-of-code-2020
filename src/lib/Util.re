@@ -1,27 +1,7 @@
-module String = {
-  let rec join = (sep, strings) =>
-    switch (strings) {
-    | [head] => head
-    | [head, ...tail] => head ++ sep ++ join(sep, tail)
-    | [] => ""
-    };
-
-  let get_opt = (index, str) => {
-    switch (str.[index]) {
-    | ch => Some(ch)
-    | exception (Invalid_argument(_)) => None
-    };
-  };
-};
-
-module Boolean = {
-  let xor = (x, y) =>
-    switch (x, y) {
-    | (true, true) => false
-    | (true, false) => true
-    | (false, true) => true
-    | (false, false) => false
-    };
-
-  let (<<>>) = xor;
-};
+let string_of_multiply = l =>
+  l
+  |> List.map(float_of_int)
+  |> List.fold_left(( *. ), 1.0)
+  |> string_of_float
+  |> String.split_on_char('.')
+  |> List.hd;

@@ -1,10 +1,10 @@
+open Extended;
+
 type policy = {
   min: int,
   max: int,
   ch: char,
 };
-
-type password = string;
 
 module Parser = {
   open Angstrom;
@@ -71,9 +71,9 @@ let part1 = input => {
 let part2 = input => {
   let validate_with = (policy, password) => {
     let {min, max, ch} = policy;
-    let ch1 = password |> Util.String.get_opt(min - 1) |> Option.get;
-    let ch2 = password |> Util.String.get_opt(max - 1) |> Option.get;
-    Util.Boolean.xor(ch == ch1, ch == ch2);
+    let ch1 = password |> String.get_opt(min - 1) |> Option.get;
+    let ch2 = password |> String.get_opt(max - 1) |> Option.get;
+    Bool.xor(ch == ch1, ch == ch2);
   };
 
   Parser.parse(input)

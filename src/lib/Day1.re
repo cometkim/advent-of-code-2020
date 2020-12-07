@@ -25,6 +25,5 @@ let part2 = input => {
   let numbers = Parser.parse(input);
   let n = numbers |> List.find(n => {div(`step1(n), numbers) != None});
   let (n1, n2, n3) = div(`step1(n), numbers) |> Option.get;
-  let result = float_of_int(n1) *. float_of_int(n2) *. float_of_int(n3);
-  string_of_float(result) |> String.split_on_char('.') |> List.hd;
+  Util.string_of_multiply([n1, n2, n3]);
 };

@@ -12,63 +12,28 @@ let iter_slope = (~slope_right: int, ~slope_down: int, f, l) => {
      );
 };
 
-let part1 = input => {
+let count_with_slope = (~slope_right, ~slope_down, l) => {
   let count = ref(0);
-  input
-  |> iter_slope(~slope_right=3, ~slope_down=1, x => {
+  l
+  |> iter_slope(~slope_right, ~slope_down, x => {
        switch (x == '#') {
        | true => count := count^ + 1
        | _ => ()
        }
      });
-  string_of_int(count^);
+  count^;
+};
+
+let part1 = input => {
+  let count = input |> count_with_slope(~slope_right=3, ~slope_down=1);
+  string_of_int(count);
 };
 
 let part2 = input => {
-  let count1 = ref(0);
-  input
-  |> iter_slope(~slope_right=1, ~slope_down=1, x => {
-       switch (x == '#') {
-       | true => count1 := count1^ + 1
-       | _ => ()
-       }
-     });
-
-  let count2 = ref(0);
-  input
-  |> iter_slope(~slope_right=3, ~slope_down=1, x => {
-       switch (x == '#') {
-       | true => count2 := count2^ + 1
-       | _ => ()
-       }
-     });
-
-  let count3 = ref(0);
-  input
-  |> iter_slope(~slope_right=5, ~slope_down=1, x => {
-       switch (x == '#') {
-       | true => count3 := count3^ + 1
-       | _ => ()
-       }
-     });
-
-  let count4 = ref(0);
-  input
-  |> iter_slope(~slope_right=7, ~slope_down=1, x => {
-       switch (x == '#') {
-       | true => count4 := count4^ + 1
-       | _ => ()
-       }
-     });
-
-  let count5 = ref(0);
-  input
-  |> iter_slope(~slope_right=1, ~slope_down=2, x => {
-       switch (x == '#') {
-       | true => count5 := count5^ + 1
-       | _ => ()
-       }
-     });
-
-  string_of_int(count1^ * count2^ * count3^ * count4^ * count5^);
+  let count1 = input |> count_with_slope(~slope_right=1, ~slope_down=1);
+  let count2 = input |> count_with_slope(~slope_right=3, ~slope_down=1);
+  let count3 = input |> count_with_slope(~slope_right=5, ~slope_down=1);
+  let count4 = input |> count_with_slope(~slope_right=7, ~slope_down=1);
+  let count5 = input |> count_with_slope(~slope_right=1, ~slope_down=2);
+  Util.string_of_multiply([count1, count2, count3, count4, count5]);
 };
