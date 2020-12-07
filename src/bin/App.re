@@ -10,7 +10,8 @@ let select_day = () => {
         "day 1 - part 2",
         "day 2 - part 1",
         "day 2 - part 2",
-        "day 3",
+        "day 3 - part 1",
+        "day 3 - part 2",
         "day 4",
         "day 5",
       ],
@@ -25,6 +26,8 @@ let read_input = day => {
     | "day 1 - part 2" => Some("day1.txt")
     | "day 2 - part 1"
     | "day 2 - part 2" => Some("day2.txt")
+    | "day 3 - part 1"
+    | "day 3 - part 2" => Some("day3.txt")
     | _ => None
     };
   switch (filename) {
@@ -43,6 +46,8 @@ let get_answer = (day, input) =>
   | "day 1 - part 2" => Some(Day1.part2(input))
   | "day 2 - part 1" => Some(Day2.part1(input))
   | "day 2 - part 2" => Some(Day2.part2(input))
+  | "day 3 - part 1" => Some(Day3.part1(input))
+  | "day 3 - part 2" => Some(Day3.part2(input))
   | _ => None
   };
 
