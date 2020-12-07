@@ -42,16 +42,14 @@ module Parser = {
       words,
     );
 
-  let parse = input => {
-    let lines = input |> String.split_on_char('\n');
-    lines
+  let parse = input =>
+    input
     |> List.map(line =>
          switch (line |> parse_string(~consume=All, policy_and_password)) {
          | Ok((policy, password)) => (policy, password)
          | Error(message) => failwith(message)
          }
        );
-  };
 };
 
 let part1 = input => {

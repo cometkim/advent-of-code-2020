@@ -31,9 +31,8 @@ let read_input = day => {
   | Some(filename) =>
     let* chan = Lwt_io.open_file("./src/bin/input/" ++ filename, ~mode=Input);
     let stream = Lwt_io.read_lines(chan);
-
     let* lines = stream |> Lwt_stream.to_list;
-    Lwt.return(Some(lines |> Util.String.join("\n")));
+    Lwt.return(Some(lines));
   | None => Lwt.return(None)
   };
 };

@@ -1,9 +1,5 @@
 module Parser = {
-  let parse = input => {
-    input
-    |> String.split_on_char('\n')
-    |> List.map(line => int_of_string(line));
-  };
+  let parse = input => input |> List.map(line => int_of_string(line));
 };
 
 // I picked up answer as soon as I saw the input :P
