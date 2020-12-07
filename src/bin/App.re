@@ -8,7 +8,8 @@ let select_day = () => {
       ~options=[
         "day 1 - part 1",
         "day 1 - part 2",
-        "day 2",
+        "day 2 - part 1",
+        "day 2 - part 2",
         "day 3",
         "day 4",
         "day 5",
@@ -22,6 +23,8 @@ let read_input = day => {
     switch (day) {
     | "day 1 - part 1"
     | "day 1 - part 2" => Some("day1.txt")
+    | "day 2 - part 1"
+    | "day 2 - part 2" => Some("day2.txt")
     | _ => None
     };
   switch (filename) {
@@ -30,7 +33,7 @@ let read_input = day => {
     let stream = Lwt_io.read_lines(chan);
 
     let* lines = stream |> Lwt_stream.to_list;
-    Lwt.return(Some(lines |> Util.joinStrings("\n")));
+    Lwt.return(Some(lines |> Util.String.join("\n")));
   | None => Lwt.return(None)
   };
 };
@@ -39,6 +42,8 @@ let get_answer = (day, input) =>
   switch (day) {
   | "day 1 - part 1" => Some(Day1.part1(input))
   | "day 1 - part 2" => Some(Day1.part2(input))
+  | "day 2 - part 1" => Some(Day2.part1(input))
+  | "day 2 - part 2" => Some(Day2.part2(input))
   | _ => None
   };
 

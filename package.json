@@ -13,16 +13,16 @@
   "buildDirs": {
     "src/lib": {
       "imports": [
-        "Lwt = require('lwt')",
-        "Fp = require('@reason-native/fp')",
+        "Lwt = require('lwt')", "Fp = require('@reason-native/fp')",
         "Fs = require('@reason-native/fs/lib')",
-        "Console = require('@reason-native/console/lib')"
+        "Console = require('@reason-native/console/lib')",
+        "Angstrom = require('angstrom')"
       ]
     },
     "src/bin": {
       "imports": [
         "Lib = require('advent-of-code-2020/src/lib')",
-        "Inquire = require('@opam/inquire')"
+        "Inquire = require('inquire')"
       ],
       "bin": { "AdventOfCode2020App.exe": "App.re" }
     },
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",
+    "@opam/angstrom": "0.15.0",
     "@opam/dune": "*",
     "@opam/inquire": "0.2.1",
     "@opam/lwt": "*",
