@@ -17,10 +17,6 @@
         "Fp = require('@reason-native/fp')",
         "Fs = require('@reason-native/fs/lib')",
         "Console = require('@reason-native/console/lib')"
-      ],
-      "preprocess": [
-        "pps",
-        "lwt_ppx"
       ]
     },
     "src/bin": {
@@ -48,7 +44,6 @@
     "@opam/dune": "*",
     "@opam/inquire": "0.2.1",
     "@opam/lwt": "*",
-    "@opam/lwt_ppx": "*",
     "@pesy/esy-pesy": "0.1.0-alpha.13",
     "@reason-native/console": "^0.1.0",
     "@reason-native/fp": "*",

@@ -1,9 +1,7 @@
+open Lwt.Syntax;
 open Lib;
-open Lwt;
 
 exception NoSolution(string);
-
-let (>>=) = Lwt.(>>=);
 
 let days = [
   "day 1 - part 1",
@@ -14,19 +12,17 @@ let days = [
   "day 5",
 ];
 
-let result =
-  Inquire.select("Select a day", ~options=days)
-  >>= (
-    day =>
-      Lwt.return(
-        switch (day) {
-        | "day 1 - part 1" => Day1.part1()
-        | _ => raise(NoSolution(day))
-        },
-      )
-  );
+let select_answer = () => {
+  let* day = Inquire.select("Select a day", ~options=days);
+  let result =
+    switch (day) {
+    | "day 1 - part 1" => Day1.part1()
+    | _ => raise(NoSolution(day))
+    };
+  Lwt.return(result);
+};
 
-switch (Lwt_main.run(result)) {
+switch (select_answer() |> Lwt_main.run) {
 | answer => Console.log(answer)
-| exception (NoSolution(day)) => Console.log("No Solution for " ++ day)
+| exception (NoSolution(day)) => Console.error("No Solution for " ++ day)
 };
