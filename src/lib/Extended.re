@@ -29,3 +29,11 @@ module String = {
     };
   };
 };
+
+module Option = {
+  include Option;
+
+  let filter = (f, o) => {
+    o |> map(v => f(v) ? Some(v) : None) |> Option.join;
+  };
+};
