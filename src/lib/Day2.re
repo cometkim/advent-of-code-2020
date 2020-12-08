@@ -8,28 +8,7 @@ type policy = {
 
 module Parser = {
   open Angstrom;
-
-  module Token = {
-    let is_digit =
-      fun
-      | '0' .. '9' => true
-      | _ => false
-    and is_word =
-      fun
-      | 'a' .. 'z'
-      | 'A' .. 'Z' => true
-      | _ => false
-    and is_space =
-      fun
-      | ' '
-      | '\t' => true
-      | _ => false;
-  };
-
-  let digits = take_while1(Token.is_digit) >>| int_of_string;
-  let words = take_while1(Token.is_word);
-  let spaces = skip_while(Token.is_space);
-  let lex = p => p <* spaces;
+  include Util.Parser;
 
   let range = lift2((min, max) => (min, max), digits, char('-') *> digits);
   let policy =
@@ -45,10 +24,9 @@ module Parser = {
   let parse = input =>
     input
     |> List.map(line =>
-         switch (line |> parse_string(~consume=All, policy_and_password)) {
-         | Ok((policy, password)) => (policy, password)
-         | Error(message) => failwith(message)
-         }
+         line
+         |> parse_string(~consume=All, policy_and_password)
+         |> Result.get_ok
        );
 };
 

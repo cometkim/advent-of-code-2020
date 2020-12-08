@@ -30,36 +30,22 @@ type passport =
 
 module Parser = {
   open Angstrom;
+  include Util.Parser;
 
-  module Token = {
-    let is_letter =
-      fun
-      | 'a' .. 'z' => true
-      | _ => false;
-    let is_digit =
-      fun
-      | '0' .. '9' => true
-      | _ => false;
-    let is_hex =
-      fun
-      | '0' .. '9' => true
-      | 'a' .. 'f' => true
-      | _ => false;
-    let is_any_value =
-      fun
-      | '0' .. '9' => true
-      | 'a' .. 'z' => true
-      | '#' => true
-      | _ => false;
-  };
-
-  let space = char(' ');
-  let eol = char('\n');
-
-  let any_key = take_while1(Token.is_letter);
-  let any_value = take_while1(Token.is_any_value);
+  let any_value =
+    take_while1(t => Token.is_letter(t) || Token.is_digit(t) || t == '#');
   let pair = (k, v) => lift2((_k, v) => v, k <* char(':'), v);
 
+  module Key = {
+    let birth_year = string("byr");
+    let issue_year = string("iyr");
+    let expiration_year = string("eyr");
+    let height = string("hgt");
+    let hair_color = string("hcl");
+    let eye_color = string("ecl");
+    let passport_id = string("pid");
+    let country_id = string("cid");
+  };
   module Value = {
     let year = take_while1(Token.is_digit) >>| int_of_string;
     let length_cm =
@@ -94,18 +80,18 @@ module Parser = {
           }
       );
   };
-
   module Property = {
-    let birth_year = pair(string("byr"), any_value) >>| (v => `byr(v));
-    let issue_year = pair(string("iyr"), any_value) >>| (v => `iyr(v));
-    let expiration_year = pair(string("eyr"), any_value) >>| (v => `eyr(v));
-    let height = pair(string("hgt"), any_value) >>| (v => `hgt(v));
-    let hair_color = pair(string("hcl"), any_value) >>| (v => `hcl(v));
-    let eye_color = pair(string("ecl"), any_value) >>| (v => `ecl(v));
-    let passport_id = pair(string("pid"), any_value) >>| (v => `pid(v));
-    let country_id = pair(string("cid"), any_value) >>| (v => `cid(v));
+    let birth_year = pair(Key.birth_year, any_value) >>| (v => `byr(v));
+    let issue_year = pair(Key.issue_year, any_value) >>| (v => `iyr(v));
+    let expiration_year =
+      pair(Key.expiration_year, any_value) >>| (v => `eyr(v));
+    let height = pair(Key.height, any_value) >>| (v => `hgt(v));
+    let hair_color = pair(Key.hair_color, any_value) >>| (v => `hcl(v));
+    let eye_color = pair(Key.eye_color, any_value) >>| (v => `ecl(v));
+    let passport_id = pair(Key.passport_id, any_value) >>| (v => `pid(v));
+    let country_id = pair(Key.country_id, any_value) >>| (v => `cid(v));
 
-    let parser =
+    let any =
       birth_year
       <|> issue_year
       <|> expiration_year
@@ -117,7 +103,7 @@ module Parser = {
   };
 
   let passport =
-    sep_by(space <|> eol, Property.parser)
+    sep_by(space <|> eol, Property.any)
     >>| (
       props => {
         let input =
@@ -210,17 +196,11 @@ module Parser = {
       }
     );
 
-  let passports = sep_by(eol, passport);
-
-  let parse = input => {
-    let result =
-      input |> String.join("\n") |> parse_string(~consume=All, passports);
-
-    switch (result) {
-    | Ok(list) => list
-    | Error(message) => failwith(message)
-    };
-  };
+  let parse = input =>
+    input
+    |> String.join("\n")
+    |> parse_string(~consume=All, sep_by(eol, passport))
+    |> Result.get_ok;
 };
 
 let part1 = input => {
