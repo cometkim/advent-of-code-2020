@@ -37,3 +37,14 @@ module Option = {
     o |> map(v => f(v) ? Some(v) : None) |> Option.join;
   };
 };
+
+module Int = {
+  include Int;
+
+  let clamp = ((min, max), v) =>
+    switch (v) {
+    | v when v < min => min
+    | v when v > max => max
+    | _ => v
+    };
+};
