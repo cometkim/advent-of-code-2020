@@ -80,4 +80,9 @@ module List = {
     l |> iter(f);
     l;
   };
+
+  let tapi = (f, l) => {
+    l |> iteri(f);
+    l;
+  };
 };
