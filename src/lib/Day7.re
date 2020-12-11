@@ -116,23 +116,22 @@ module Parser = {
       rules_start *> rules <* rules_end,
     );
 
-  let parse_line = parse_string(~consume=All, decl);
-
   let parse = lines =>
-    lines
-    |> List.map(parse_line)
-    |> List.mapi((i, result) =>
-         switch (result) {
-         | Ok(result) => result
-         | Error(message) =>
-           failwith("error at line " ++ string_of_int(i + 1) ++ message)
-         }
-       )
-    |> List.fold_left(
-         (tracker, (loggage, rules)) =>
-           tracker |> Tracker.append(loggage, rules),
-         Tracker.make(),
-       );
+    Tracker.(
+      lines
+      |> List.map(parse_string(~consume=All, decl))
+      |> List.mapi((i, result) =>
+           switch (result) {
+           | Ok(result) => result
+           | Error(message) =>
+             failwith("error at line " ++ string_of_int(i + 1) ++ message)
+           }
+         )
+      |> List.fold_left(
+           (tracker, (loggage, rules)) => tracker |> append(loggage, rules),
+           make(),
+         )
+    );
 };
 
 let part1 = input => {
@@ -141,26 +140,25 @@ let part1 = input => {
 
   Tracker.(
     tracker
-    |> Tracker.reverse
-    |> Tracker.find_paths(target)
-    |> Tracker.dedup_paths
+    |> reverse
+    |> find_paths(target)
+    |> dedup_paths
     |> List.length
     |> string_of_int
   );
 };
 
 let part2 = input => {
+  open Tracker;
+
   let tracker = input |> Parser.parse;
   let target = Loggage.{style: "shiny gold"};
-  let paths = Tracker.(tracker |> find_paths(target));
+  let paths = tracker |> find_paths(target);
 
   let rec count_on_path = (at, paths) => {
-    open Tracker;
-
     let (edges, paths) = paths |> List.partition(edge => edge.from == at);
-
     edges
-    |> Tracker.dedup_paths
+    |> dedup_paths
     |> List.map(edge => edge.max + edge.max * count_on_path(edge.to_, paths))
     |> List.fold_left((+), 0);
   };
