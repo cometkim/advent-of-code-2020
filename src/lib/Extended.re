@@ -85,4 +85,24 @@ module List = {
     l |> iteri(f);
     l;
   };
+
+  let partitioni = (f, l) => {
+    let i = ref(0);
+    l
+    |> partition(x => {
+         let result = f(i^, x);
+         i := i^ + 1;
+         result;
+       });
+  };
+
+  let replace = (i, v, l) => {
+    let (head, tail) = l |> partitioni((index, _) => index < i);
+    let tail =
+      switch (tail) {
+      | [_, ...rest] => [v, ...rest]
+      | [] => raise(Failure("No element at " ++ string_of_int(i)))
+      };
+    head @ tail;
+  };
 };
