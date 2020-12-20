@@ -15,3 +15,10 @@ describe("Int", ({test}) => {
     expect.int(Int.count_positive_bits(25, 1)).toBe(1);
   })
 });
+
+describe("List", ({test}) => {
+  test("slice", ({expect}) => {
+    expect.list([1, 2, 3] |> List.slice(2)).toEqual([1, 2]);
+    expect.list([1, 2, 3] |> List.slice(-2)).toEqual([2, 3]);
+  })
+});

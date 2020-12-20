@@ -22,7 +22,9 @@ let select_day = () => {
         "day 7 - part 2",
         "day 8 - part 1",
         "day 8 - part 2",
-        "day 9",
+        "day 9 - part 1",
+        "day 9 - part 2",
+        "day 10",
       ],
     );
   Lwt.return(day);
@@ -47,6 +49,8 @@ let read_input = day => {
     | "day 7 - part 2" => Some("day7.txt")
     | "day 8 - part 1"
     | "day 8 - part 2" => Some("day8.txt")
+    | "day 9 - part 1"
+    | "day 9 - part 2" => Some("day9.txt")
     | _ => None
     };
   switch (filename) {
@@ -77,6 +81,8 @@ let get_answer = (day, input) =>
   | "day 7 - part 2" => Some(Day7.part2(input))
   | "day 8 - part 1" => Some(Day8.part1(input))
   | "day 8 - part 2" => Some(Day8.part2(input))
+  | "day 9 - part 1" => Some(Day9.part1(input))
+  | "day 9 - part 2" => Some(Day9.part2(input))
   | _ => None
   };
 

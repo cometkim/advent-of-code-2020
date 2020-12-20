@@ -105,4 +105,50 @@ module List = {
       };
     head @ tail;
   };
+
+  let init = (length, f) => Array.init(length, f) |> Array.to_list;
+
+  let until = (f, l) => {
+    let copy = ref([]);
+    l
+    |> List.find_opt(x => {
+         copy := copy^ @ [x];
+         f(x);
+       })
+    |> ignore;
+    copy^;
+  };
+
+  let slice = (n, l) => {
+    let length = l |> List.length;
+    let copy = ref([]);
+    l
+    |> iteri((i, x) => {
+         switch (n >= 0, length - Int.abs(n)) {
+         | (true, n) when i <= n => copy := copy^ @ [x]
+         | (false, n) when i >= n => copy := copy^ @ [x]
+         | _ => ()
+         }
+       });
+    copy^;
+  };
+
+  let slice2 = (begin_, end_, l) => {
+    let copy = ref([]);
+    l
+    |> iteri((i, x) => {
+         switch (begin_ <= i, i < end_) {
+         | (true, true) => copy := copy^ @ [x]
+         | _ => ()
+         }
+       });
+    copy^;
+  };
+
+  let rec ft = l =>
+    switch (l) {
+    | [] => failwith("No elements")
+    | [ft] => ft
+    | [_, ...tl] => ft(tl)
+    };
 };
